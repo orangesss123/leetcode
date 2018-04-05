@@ -1,0 +1,52 @@
+#问题描述：给定两个排序好的数组nums1和nums2，得到两个数组的中位数。
+public class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        //这道题运用了游标的思想，因为数组已经是已经排好的，那么就从两个数组最小的开始比较，将较小的数加入总数组中，同时将这个数组向后移一个。这样，只需要花遍历数组（m+n）的时间就可以将所有数排序。
+        //如果这两个数组的数大小没有排序怎么办，那就先将数组排序然后再按照这种方法来就好了
+        double tem=0.0;//这个作为返回数组
+        int lengthall=nums1.length+nums2.length;//用来记录两个数组的总长度
+        int l1=nums1.length;
+        int l2=nums2.length;
+        int s1=0;//nums1的游标
+        int s2=0;//nums2的游标
+        int []save=new int[lengthall];//用来存储合并之后的数组
+        int sall=0;
+        while(s1!=l1&&s2!=l2)
+        {   
+            if(nums1[s1]<=nums2[s2])
+            {
+                save[sall]=nums1[s1];
+                s1++;
+            }
+            else
+            {
+                save[sall]=nums2[s2];
+                s2++;
+            }
+            sall++;
+        }
+        while(s1<=l1-1)//说明另一个数组已经被遍历了，那么将这个数组的剩余的数组依次加入
+        {
+            save[sall]=nums1[s1];
+            sall++;
+            s1++;
+        }
+       while(s2<=l2-1)
+        {
+            save[sall]=nums2[s2];
+            sall++;
+            s2++;
+        }
+        if(lengthall%2==0)
+        {
+            double i1=save[lengthall/2-1];//注意这里需要讲int转为double型
+            double i2=save[lengthall/2];
+            tem=(i1+i2)/2;
+        }
+        if(lengthall%2==1)
+        {
+            tem=save[(lengthall-1)/2];
+        }
+        return tem;
+     }
+}
