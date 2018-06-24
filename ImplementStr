@@ -1,0 +1,67 @@
+//这是一个判断一个字符串是不是另一个字符串（大字符串）的，如果是，则返回首次匹配上的下坐标
+//注意考虑所有的可能情况，比如字符串为空的情况（返回0）
+//一下是代码
+//实现的中心思想是，首先找到字符串中所有首字符匹配的字符的位置，并用链表存储起来，并开始从这些位置一个一个开始匹配，直到找到第一个完全匹配，并返回index
+class Solution {
+    public int strStr(String haystack, String needle) {
+       int lenh=haystack.length();
+       int lenn=needle.length();
+        int finalindex=0;//
+        List<Integer> posis=new ArrayList<Integer>();//存储大字符串中第一个字符匹配的位置。
+        boolean flag=false;
+        //find all start position of first match one 
+        if(lenh<lenn)
+        {
+            finalindex=-1;//子字符串的长度大于大字符串的情况，返回-1
+        }
+        else if(lenn==0)
+        {
+            finalindex=0;//子字符串的长度为0的情况（题中没有说明，需要询问面试官，思维要严谨）
+        }
+        else if(lenh>=lenn)
+        {
+         char []nee=new char[lenn];
+         char []hay=new char[lenh];
+         hay=haystack.toCharArray();
+         nee=needle.toCharArray();
+         char firstone=nee[0];
+       for(int i=0;i<lenh-lenn+1;i++)//找到所有存储大字符串中第一个字符匹配的位置。
+        {
+            if(hay[i]==nee[0])
+            {
+                posis.add(i);
+            }
+        }
+            if(posis.isEmpty())// no mathch ones, return false
+            {
+                return -1;
+            }
+            else//匹配的首字母不为空
+            {
+                for(Integer posi:posis)//traverse positions 
+                {
+                    int matchs=0;
+                    int pos=posi.intValue();
+                    for(int j=0;j<lenn;j++)
+                    {
+                        if(nee[j]==hay[pos+j])
+                        {  matchs+=1;//the length of match plus one
+                            continue;
+                        }
+                        else //don't macth,move to next position
+                            break;
+                    }
+                    if(matchs==lenn)//find the match(find one is enough),so break this.
+                    {
+                        flag=true;
+                        finalindex=pos;
+                        break;
+                    }
+                }
+                if(flag==false)
+                    finalindex=-1;
+            }
+        }
+     return finalindex;
+    }
+}
